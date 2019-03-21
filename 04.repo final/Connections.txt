@@ -1,0 +1,16 @@
+Connections
+
+ADXL345 
+	http://www.instructables.com/id/how-to-use-the-ADXL345-on-Raspberry-pi/
+	follow this steps for setup
+	connections
+		GND - GND
+		3V - 3V3
+		SDA - SDA
+		SCL - SCL 
+
+Linear Magnetic Hall effect sensor
+	connections
+		g - ground
+		+ - vcc 5 volt
+		do - GPIO 14 TXDO
