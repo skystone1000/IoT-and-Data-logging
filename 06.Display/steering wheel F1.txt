@@ -1,0 +1,41 @@
+steering wheel F1
+
+3 digit 7 segment display price in india
+temp sensor -Uxcell PT100
+
+
+
+Data Logging and transmission using IOT
+	ABSTRACT
+	Introduction
+	technical solution-
+		sensors
+	 	some details 
+		basic structure 
+		integration of sensors
+	results or the output
+	problems our solution solves
+	refrences
+
+	
+accelerometer ADXL345 MMA7455
+
+
+temperature sensor PT100		
+DS18B20 Technical specs: Usable temperature range: -55 to 125°C (-67°F to +257°F) 9 to 12 bit selectable resolution. Uses 1-Wire interface- requires only one digital pin for communication.
+
+
+RPi 3
+
+
+I2C shield
+
+
+hall effect sensor A1120EUA-T
+
+
+Cost 
+	raspi 3
+	3.5" inch tft touch screen module for mega 2560
+	Adafruit PiTFT Plus 3.5 resistive touchscreen
+		Adafruit’s PiTFT Helper15 configuration script

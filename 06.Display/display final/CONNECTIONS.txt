@@ -1,0 +1,25 @@
+CONNECTIONS
+ADXL345 
+	http://www.instructables.com/id/how-to-use-the-ADXL345-on-Raspberry-pi/
+	follow this steps for setup
+
+	connections
+	GND - GND
+	3V - 3V3
+	SDA - SDA
+	SCL - SCL 
+
+hall
+
+	
+	connections
+	G - ground
+	+ - vcc 5 volt
+	DO - GPIO 14 TXDO
+
+
+temp
+
+	VCC- 3v3
+	GND - gnd
+	DQ DS18 - GPIO4
