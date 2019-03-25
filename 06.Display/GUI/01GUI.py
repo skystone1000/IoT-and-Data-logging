@@ -1,17 +1,9 @@
-# Display stats for framebuffer1 LCD
-# Nov 22 2014
-# Updated: Jan 18 2016
-# Adding living room temp and humidity
-# Uses framebuffer 1
-#
 # Picture of how it looks: http://imgur.com/Hm9syVQ
-
 import pygame, sys, os, time, datetime, urllib, csv
 from pygame.locals import *
 os.environ["SDL_FBDEV"] = "/dev/fb1"
 
 ## Globals
-
 values = "NULL"
 labels = "NULL"
 timetopoll = True
@@ -19,7 +11,6 @@ timetopoll = True
 pygame.init()
 
 ## Set up the screen
-
 DISPLAYSURF = pygame.display.set_mode((320, 240), 0, 16)
 pygame.mouse.set_visible(0)
 pygame.display.set_caption('Stats')
@@ -33,7 +24,6 @@ BLUE  = (  0,   0, 255)
 CYAN  = (  0, 255, 255)
 
 ## Main loop
-
 while True:
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -42,9 +32,7 @@ while True:
 
     currentime = datetime.datetime.time(datetime.datetime.now())
 
-
 ## Poll temperature date from splunk as CSV and parse it
-
     if timetopoll:
       try:
        tempdata = urllib.urlopen("http://10.0.0.14:3344/info/pitemp.cgi")
@@ -71,18 +59,14 @@ while True:
        timetopoll = False
 
 # Relies on lighthttpd on Richmond to poll Splunk for this data
-
     else:
       #print "Not polling"
       timetopoll = True
 
-
 ## Draw the title
-
     ##graph = pygame.image.load("/root/lcd/background.png")
     #graphrect = graph.get_rect()
     #DISPLAYSURF.blit(graph, graphrect)
-
     black_square_that_is_the_size_of_the_screen = pygame.Surface(DISPLAYSURF.get_size())
     black_square_that_is_the_size_of_the_screen.fill((0, 0, 0))
     DISPLAYSURF.blit(black_square_that_is_the_size_of_the_screen, (0, 0))
@@ -97,10 +81,7 @@ while True:
     textpos = text.get_rect(centerx=DISPLAYSURF.get_width()/4+179)
     DISPLAYSURF.blit(text, textpos)
 
-
-
 ## Draw temperatures
-
     font = pygame.font.Font(None, 98)
     text = font.render(values[4], 1, WHITE)
 ##    text = font.render("188.8", 1, WHITE)
@@ -113,14 +94,10 @@ while True:
     DISPLAYSURF.blit(textF, textposF)
 
 ## Draw Lines
-
     pygame.draw.line(DISPLAYSURF, GREEN, [5, 140], [DISPLAYSURF.get_width()-5,140], 1)
-
     pygame.draw.line(DISPLAYSURF, GREEN, [DISPLAYSURF.get_width()/2+30, 5], [DISPLAYSURF.get_width()/2+30,140], 1)
 
-
 ## Living room Temp
-
     font = pygame.font.Font(None, 75)
     text = font.render(values[6], 1, WHITE)
     textpos = text.get_rect(topright=(DISPLAYSURF.get_width()/4+220,30))
@@ -131,9 +108,7 @@ while True:
     textposF = textpos[0] + textpos[2], textpos[1] + 10
     DISPLAYSURF.blit(textF, textposF)
 
-
 ## Living room humidity
-
     font = pygame.font.Font(None, 75)
     text = font.render(values[5], 1, WHITE)
     textpos = text.get_rect(topright=(DISPLAYSURF.get_width()/4+220,80))
@@ -144,9 +119,7 @@ while True:
     textposF = textpos[0] + textpos[2], textpos[1] + 10
     DISPLAYSURF.blit(textF, textposF)
 
-
 ## Min
-
     font = pygame.font.Font(None, 30)
     text = font.render("Min:", 1, WHITE)
     textpos = text.get_rect(topright=(DISPLAYSURF.get_width()/2-90,145))
@@ -160,7 +133,6 @@ while True:
 
 
 ## Max
-
     font = pygame.font.Font(None, 30)
     text = font.render("Max:", 1, WHITE)
 ##    textpos = text.get_rect(topright=(DISPLAYSURF.get_width()/2+90,145))
@@ -173,10 +145,7 @@ while True:
     textposF = textpos[0] + textpos[2] + 10, textpos[1]
     DISPLAYSURF.blit(textF, textposF)
 
-
-
 ## Attic
-
     font = pygame.font.Font(None, 30)
     text = font.render("Attic:", 1, WHITE)
 ##    textpos = text.get_rect(topright=(DISPLAYSURF.get_width()/2-90,165))
@@ -190,7 +159,6 @@ while True:
     DISPLAYSURF.blit(textF, textposF)
 
 ## Garage
-
     font = pygame.font.Font(None, 30)
     text = font.render("Garage:", 1, WHITE)
     textpos = text.get_rect(topright=(DISPLAYSURF.get_width()/2+90,165))
@@ -202,18 +170,13 @@ while True:
     DISPLAYSURF.blit(textF, textposF)
 
 ## Draw time
-
     font = pygame.font.Font(None, 75)
     text = font.render(currentime.strftime("%I:%M %p"), 1, CYAN)
     textpos = text.get_rect(center=(DISPLAYSURF.get_width()/2,215))
     DISPLAYSURF.blit(text, textpos)
 
-
 ## Update the LCD
-
     pygame.display.update()    
 
-
 ## Sleep time!
-
     time.sleep(60) 

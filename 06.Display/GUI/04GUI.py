@@ -3,7 +3,6 @@ import time , datetime , sys
 import pygame , time , os , csv
 from pygame.locals import *
 
-
 # Globals
 rpm = 0
 speed = 0
@@ -18,36 +17,33 @@ gear = 0
 connection = None
 dtc = None
 WHITE = (255,255,255)
-
+BLACK = (0,0,0)
 
 # Set up the window. If piTFT flag is set, set up the window for the screen. Elsecreate it normally for use on normal monitor.
-
 pygame.init()
 pygame.mouse.set_visible(0)
-windowSurface = pygame.display.set_mode((320,240))
+windowSurface = pygame.display.set_mode((607,287))
 
-
-
+bg = pygame.image.load("b1.jpg")
 
 # Helper function to draw the given string at coordinate x,y, relative to center.
 def drawText(string, x, y, font):
 	if font == "readout" :
-		text = readoutFont.render(string, True , WHITE)
+		text = readoutFont.render(string, True , BLACK)
 	elif font == "label" :
-		text = labelFont.render(string, True , WHITE)
+		text = labelFont.render(string, True , BLACK)
 	elif font == "fps" :
-		text = fpsFont.render(string, True , WHITE)
+		text = fpsFont.render(string, True , BLACK)
 	textRect = text.get_rect()
 	textRect.centerx = windowSurface.get_rect().centerx + x
 	textRect.centery = windowSurface.get_rect().centery + y
 	windowSurface.blit(text, textRect)
 
-
 # Set up fonts
 pygame.init()
-readoutFont = pygame.font.Font( "E:\SGGS\supra\display\Mohave-Regular.ttf" ,30)
-labelFont = pygame.font.Font( "E:\SGGS\supra\display\Mohave-Regular.ttf" ,20)
-fpsFont = pygame.font.Font( "E:\SGGS\supra\display\Mohave-Regular.ttf" ,10)
+readoutFont = pygame.font.Font( "/home/pi/code display/font/Mohave-Regular.ttf" ,30)
+labelFont = pygame.font.Font( "/home/pi/code display/font/Mohave-Regular.ttf" ,20)
+fpsFont = pygame.font.Font( "/home/pi/code display/font/Mohave-Regular.ttf" ,10)
 
 # Set the caption.
 pygame.display.set_caption("TEAM PRAVEG")
@@ -55,19 +51,14 @@ pygame.display.set_caption("TEAM PRAVEG")
 # Create a clock object to use so we can log every second.
 clock = pygame.time.Clock()
 
-
-
 # Run the game loop
 while True :
 	for event in pygame.event.get():
-		if event.type == QUIT:
-			
+		if event.type == QUIT:			
 			pygame.quit()
 			sys.exit()
-
-	
-	
-	
+	windowSurface.blit(bg, (10,10))
+		
 	# Draw the RPM readout and label.
 	drawText( str (rpm), -5, -10, "readout" )
 	drawText( "RPM" , -5, 20, "label" )
@@ -88,7 +79,6 @@ while True :
 	drawText( str (speed) + " mph" , 120, 60, "readout" )
 	drawText( "Speed" , 130, 95, "label" )
 
-
 	# Draw the throttle position readout and label.
 	drawText( str (throttlePosition) + " %" , 130, -105, "readout" )
 	drawText( "Throttle" , 130, -80, "label" )
@@ -101,13 +91,8 @@ while True :
 #	drawText( str (engineLoad) + " %" , 0, -145, "readout" )
 #	drawText( "Load" , 0, -110, "label" )
 
-		
-
 	# Update the clock.
 	dt = clock.tick()
 
-	
-
-	
 	# draw the window onto the screen
 	pygame.display.update()
