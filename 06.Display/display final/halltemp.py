@@ -1,41 +1,28 @@
 import csv, os
 from time import gmtime, strftime
-
 # rpm
 import RPi.GPIO as GPIO
 import time
-# rpm end
-
 # adxl code
 import smbus
 import time
 from time import sleep
-
 # display
 import time, datetime, sys
 import pygame, time, os, csv
 from pygame.locals import *
-
-# display end
-
 #temp
 import glob
-# temp end
-
 
 # Globals
 rpm = 0
 speed = 0
 coolantTemp = 20
-
 throttlePosition = 0
 timingAdvance = 0
-
 gear = 0
 black = (0,0,0)
 WHITE = (255,255,255)
-
-
 
 #temp dec
 os.system('modprobe w1-gpio')                              # load one wire communication device kernel modules
@@ -43,10 +30,7 @@ os.system('modprobe w1-therm')
 base_dir = '/sys/bus/w1/devices/'                          # point to the address
 device_folder = glob.glob(base_dir + '28*')[0]             # find device with address starting from 28*
 device_file = device_folder + '/w1_slave'                  # store the details
-
-
 #temp dec end
-
 
 # rpm
 GPIO.setmode(GPIO.BCM)
@@ -57,9 +41,7 @@ GPIO.setwarnings(False)
 revision = ([l[12:-1] for l in open('/proc/cpuinfo', 'r').readlines() if l[:8] == "Revision"] + ['0000'])[0]
 bus = smbus.SMBus(1 if int(revision, 16) >= 4 else 0)
 
-
 startTime = strftime("%Y-%m-%d %H:%M:%S", gmtime())
-
 
 # rpm
 pulse = 0
@@ -72,20 +54,14 @@ elapse = 0.00
 multiplier = 0
 
 start = time.time()
-
 GPIO.setup(hall, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-
 # display
-# Set up the window. If piTFT flag is set, set up the window for the screen. Elsecreate it normally for use on normal monitor.
 
+# Set up the window. If piTFT flag is set, set up the window for the screen. Elsecreate it normally for use on normal monitor.
 pygame.init()
 pygame.mouse.set_visible(0)
 windowSurface = pygame.display.set_mode((607, 287))
-
 bg = pygame.image.load("b1.jpg")
-
-
-
 
 #temp func
 def read_temp_raw():
@@ -107,7 +83,6 @@ def read_temp():
       return temp_c
 #temp func end
 
-
 # Helper function to draw the given string at coordinate x,y, relative to center.
 def drawText(string, x, y, font):
     if font == "readout":
@@ -121,7 +96,6 @@ def drawText(string, x, y, font):
     textRect.centery = windowSurface.get_rect().centery + y
     windowSurface.blit(text, textRect)
 
-
 # Set up fonts
 pygame.init()
 readoutFont = pygame.font.Font("Mohave-Regular.ttf", 30)
@@ -133,26 +107,19 @@ pygame.display.set_caption("TEAM PRAVEG")
 
 # Create a clock object to use so we can log every second.
 clock = pygame.time.Clock()
-
-
 # display end
-
 
 def get_rpm():
     return rpm
 
-
 def get_speed():
     return speed
-
 
 def get_distance():
     return distance
 
-
 def get_elapse():
     return elapse
-
 
 def get_pulse(number):
     global elapse, distance, start, pulse, speed, rpm, multiplier
@@ -170,56 +137,41 @@ def get_pulse(number):
     rpm = 1 / elapse * 60
     # below is the converter from kmph to mph
     # speed = speed*0.621371
-
     start = time.time()
-
-
 # rpm end
 
-
-
 # log the data
-
 # Function to create a csv with the specified header.
 def createLog(header):
     # Write the header of the csv file.
-    with open('/home/pi/all/' + str(startTime) + '.csv', 'wb') as f:
+    with open('/home/pi/' + str(startTime) + '.csv', 'wb') as f:
         w = csv.writer(f)
         w.writerow(header)
 
-
 # Function to append to the current log file.
 def updateLog(data):
-    with open('/home/pi/all/' + str(startTime) + '.csv', 'a') as f:
+    with open('/home/pi/' + str(startTime) + '.csv', 'a') as f:
         w = csv.writer(f)
         w.writerow(data)
-
 
 # Function to close the log and rename it to include end time.
 def closeLog():
     endTime = datetime.datetime.today().strftime('%Y%m%d%H%M%S')
-    os.rename('home/pi/all/' + str(startTime) + '.csv', 'logs/' + startTime + "_" +
+    os.rename('home/pi/' + str(startTime) + '.csv', 'logs/' + startTime + "_" +
               endTime + '.csv')
-
 
 if __name__ == "__main__":
     # if run directly we'll just create an instance of the class and output
     # the current readings
-    
-
     time.sleep(1)
     GPIO.add_event_detect(hall, GPIO.FALLING, callback=get_pulse, bouncetime=20)
-
     #header = ["time", "axisX", " axisY ", " axisZ", "Rpm", "Speed", "Distance"]
     #createLog(header)
-
     while (True):
         for event in pygame.event.get():
           if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-
-        
         windowSurface.blit(bg,(10,10))            
 
         # Draw the RPM readout and label.
@@ -235,7 +187,7 @@ if __name__ == "__main__":
         drawText("Coolant", -130, 95, "label")
 
         # Draw the gear readout and label.
-        drawText(str(int(distance)), -130, -105, "readout")
+        drawText(str(int(distance)), -130, -105, "readout")   #Distance in cm
         drawText("Distance", -130, -80, "label")
 
         # Draw the speed readout and label.
@@ -254,46 +206,30 @@ if __name__ == "__main__":
         #   drawText( str (engineLoad) + " %" , 0, -145, "readout" )
         #   drawText( "Load" , 0, -110, "label" )
 
-
-
         # Update the clock.
         dt = clock.tick()
-
         # draw the window onto the screen
         pygame.display.update()
-
-        print('rpm:{0:.1f} speed:{1:.0f} distance:{2}'.format(rpm, speed,distance))  # this only prints rpm, speed, and distance
-
-        
+        print('rpm:{0:.1f} speed:{1:.0f} distance:{2}'.format(rpm, speed,distance))  # this only prints rpm, speed, and distance        
         time.sleep(.5)
         # adxl end
 
-
-
-
         # temp output
         print(read_temp())                                      # Print temperature
-        coolantTemp = read_temp()    
-        
+        coolantTemp = read_temp()
         # temp end  rem to pass to the display
 
         # get the system performance data over 20 seconds.
-
         Rpm = rpm
         Speed = speed
         Distance = distance
-
         data = [strftime("%Y-%m-%d %H:%M:%S", gmtime()), Rpm, Speed, Distance,coolantTemp]
         updateLog(data)
         windowSurface.fill(black)
-        
         time.sleep(.5)  # trying to make the display update with each pass of the hall sensor
-
         try:
             print("")
-
         except KeyboardInterrupt:
             print('Guess that\'s the end of your trip, huh?')
             closeLog()
             GPIO.cleanup()
-                 
