@@ -59,25 +59,19 @@ elapse = 0.00
 multiplier = 0
 
 start = time.time()
-
 GPIO.setup(hall, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-
 
 def get_rpm():
     return rpm
 
-
 def get_speed():
     return speed
-
 
 def get_distance():
     return distance
 
-
 def get_elapse():
     return elapse
-
 
 def get_pulse(number):
     global elapse, distance, start, pulse, speed, rpm, multiplier
@@ -95,12 +89,8 @@ def get_pulse(number):
     rpm = 1 / elapse * 60
     # below is the converter from kmph to mph
     # speed = speed*0.621371
-
     start = time.time()
-
-
 # rpm end
-
 
 # adxl
 class ADXL345:
@@ -164,26 +154,24 @@ class ADXL345:
         return {"x": x, "y": y, "z": z}
 
 
-
 #log the data
-
 # Function to create a csv with the specified header.
 def createLog(header):
     # Write the header of the csv file.
-    with open ( '/home/pi/all/' + str(startTime) + '.csv' , 'wb' ) as f:
+    with open ( '/home/pi/' + str(startTime) + '.csv' , 'wb' ) as f:
         w = csv.writer(f)
         w.writerow(header)
 
 # Function to append to the current log file.
 def updateLog(data):
-    with open ( '/home/pi/all/' + str(startTime) + '.csv' , 'a' ) as f:
+    with open ( '/home/pi/' + str(startTime) + '.csv' , 'a' ) as f:
         w = csv.writer(f)
         w.writerow(data)
 
 # Function to close the log and rename it to include end time.
 def closeLog():
     endTime = datetime.datetime.today().strftime( '%Y%m%d%H%M%S' )
-    os.rename( 'home/pi/all/' + str(startTime) + '.csv' , 'logs/' + startTime + "_" +
+    os.rename( 'home/pi/' + str(startTime) + '.csv' , 'logs/' + startTime + "_" +
 endTime + '.csv' )
 
 
