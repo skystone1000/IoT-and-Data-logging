@@ -90,7 +90,7 @@ GPIO.setup(hall, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 pygame.init()
 pygame.mouse.set_visible(0)
-windowSurface = pygame.display.set_mode((320, 240))
+windowSurface = pygame.display.set_mode((480, 240))
 
 
 # Helper function to draw the given string at coordinate x,y, relative to center.
