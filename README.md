@@ -12,13 +12,13 @@ Read the abstract to know what all includes in this project
 	Monitor
 
 ## Installation Guide
-  To Download the repository:\n
+  To Download the repository:
   `git clone https://github.com/skystone1000/IoT-and-Data-logging.git`
   
   Setup Raspberry pi with the OS you want (Raspbian preffered)
   
   Then you need to install the basic dependencies to run the project on your system:
-  `pip install paho-mqtt`\n
+  `pip install paho-mqtt`
   `Pip install psutil`
 
 ## Using Code
